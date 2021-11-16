@@ -23,3 +23,4 @@ and "api_key" from step (1)
 bot work unlimited time
 
 Licence: save author name and website
+https://github.com/ManyakRus/Telegram_bot

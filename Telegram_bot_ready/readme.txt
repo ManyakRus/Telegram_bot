@@ -22,3 +22,6 @@ Skype login: Travianbot
 бот работает бесконечно
 
 лицензия: сохранять имя автора и сайт.
+язык Русский
+Код открыт, на языке Golang
+https://github.com/ManyakRus/Telegram_bot
