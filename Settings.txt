@@ -1,0 +1,10 @@
+[Main]
+api_key=2126443722:AAGgbnXFHcx6jm1h_JsI7JmTwcPQ2-PqxOg
+filename_telefon=telefon.xlsx
+column_name=1
+column_phone=5
+column_post=3
+column_cell_phone=4
+column_adress=6
+column_email=7
+first_line_number=3
