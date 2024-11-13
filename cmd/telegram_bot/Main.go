@@ -4,11 +4,13 @@ import (
 	"errors"
 	"fmt"
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
-	"log"
+	//"log"
 	"os"
 	"strconv"
 	"strings"
 
+	"github.com/ManyakRus/starter/log"
+	"github.com/ManyakRus/starter/micro"
 	valid "github.com/asaskevich/govalidator"
 	"github.com/xuri/excelize/v2"
 	"gopkg.in/ini.v1"
@@ -195,13 +197,14 @@ func FileExists(name string) (bool, error) {
 func LoadINI() {
 	settings = settingsINI{}
 
-	ProgramDir := ProgramDir()
-	filename := "SettingsMain.txt"
-	flagOK, _ := FileExists(filename)
-	if flagOK == false {
-		filename = "SettingsM.txt"
+	ProgramDir := micro.ProgramDir()
+	filename := ProgramDir + "settings.txt"
+	Filename1 := ProgramDir + ".env"
+	flagOK, _ := FileExists(Filename1)
+	if flagOK == true {
+		filename = Filename1
 	}
-	cfg, err := ini.Load(ProgramDir + filename)
+	cfg, err := ini.Load(filename)
 	if err != nil {
 		fmt.Printf("Fail to read file: %v", err)
 		os.Exit(1)
