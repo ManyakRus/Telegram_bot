@@ -2,41 +2,42 @@ SERVICENAME=telegram_bot
 SERVICEURL=github.com/ManyakRus/$(SERVICENAME)
 
 FILEMAIN=./cmd/$(SERVICENAME)/main.go
-FILEAPP=./bin/telegram_bot
+FILEAPP=./bin/$(SERVICENAME)
 
 NEW_REPO=github.com/ManyakRus/$(SERVICENAME)
 
 
+
 run:
 	clear
-	./make_version.sh
 	go build -race -o $(FILEAPP) $(FILEMAIN)
 	#	cd ./bin && \
-	./bin/app_race
+	./bin/$(SERVICENAME)
 mod:
 	clear
-	./make_version.sh
 	go get -u ./...
 	go mod tidy -compat=1.22.1
 	go mod vendor
 	go fmt ./...
 build:
 	clear
-	./make_version.sh
 	go build -race -o $(FILEAPP) $(FILEMAIN)
-	cd ./cmd && \
-	./VersionToFile.py
+	cp $(FILEAPP) $(GOPATH)/bin
 lint:
 	clear
 	go fmt ./...
-	golangci-lint run ./...
-	gocyclo -over 10 ./
-	gocritic check ./...
-	staticcheck ./...
-test.run:
+	golangci-lint run ./internal/...
+	golangci-lint run ./pkg/...
+	gocyclo -over 10 ./internal
+	gocyclo -over 10 ./pkg
+	gocritic check ./internal/...
+	gocritic check ./pkg/...
+	staticcheck ./internal/...
+	staticcheck ./pkg/...
+run.test:
 	clear
 	go fmt ./...
-	go test -coverprofile cover.out ./...
+	go test -coverprofile cover.out ./internal/...
 	go tool cover -func=cover.out
 newrepo:
 	sed -i 's+$(SERVICEURL)+$(NEW_REPO)+g' go.mod
@@ -44,12 +45,12 @@ newrepo:
 graph:
 	clear
 	image_packages ./ docs/packages.graphml
+
 conn:
 	clear
-	image_connections ./ docs/connections.graphml $(SERVICENAME)
+	image_connections ./internal docs/connections.graphml $(SERVICENAME)
 lines:
 	clear
-	./make_version.sh
 	go_lines_count ./ ./docs/lines_count.txt 10
 licenses:
 	golicense -out-xlsx=./docs/licenses.xlsx $(FILEAPP)
